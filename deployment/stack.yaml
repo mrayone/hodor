@@ -1,0 +1,15 @@
+version: "3.1"
+
+services:
+  db:
+    image: bitnami/postgresql:latest
+    ports:
+      - 5432:5432
+    environment:
+      - POSTGRESQL_USERNAME=hodor_user
+      - POSTGRESQL_PASSWORD=password123
+      - POSTGRESQL_DATABASE=hodor_db
+    volumes:
+      - db:/bitnami/postgresql
+volumes:
+  db:
