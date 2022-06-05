@@ -12,6 +12,7 @@
     "baseUrl": "./",
     "paths": {
       "@infra/*": ["./src/infra/*"],
+      "@application/*": ["./src/application/*"],
       "@domain/*": ["./src/domain/*"]
     },
     "incremental": true,
