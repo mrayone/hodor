@@ -27,6 +27,6 @@ export class UsersService {
 
     const userResult = await this.userRepository.store(user);
 
-    return user;
+    return userResult;
   }
 }

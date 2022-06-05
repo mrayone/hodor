@@ -14,8 +14,10 @@ export class AuthService {
     const user = await this.usersService.findOne(username);
     const isMatchPass = await bcrypt.compare(pass, user.password);
     if (user && isMatchPass) {
-      const { password, ...result } = user;
-      return result;
+      return {
+        username: user.email,
+        userId: user.uuid,
+      };
     }
     return null;
   }
@@ -36,7 +38,7 @@ export class AuthService {
 
     const access = this.login({
       username: user.email,
-      pass,
+      userId: user.uuid,
     });
 
     return access;
