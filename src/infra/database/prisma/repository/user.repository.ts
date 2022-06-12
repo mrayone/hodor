@@ -8,59 +8,98 @@ class UserRepository implements IUserRepository {
   constructor(private prisma: PrismaService) {}
 
   public async store(user: User): Promise<User> {
-    const { id, password, email, isActive, updatedAt, uuid, createdAt } =
-      await this.prisma.user.create({
-        data: {
-          email: user.email,
-          password: user.password,
-          uuid: user.uuid,
-        },
-      });
+    const profile = await this.prisma.profile.findUnique({
+      where: { name: 'User' },
+    });
+    const {
+      id,
+      password,
+      email,
+      firstName,
+      lastName,
+      status,
+      updatedAt,
+      uuid,
+      createdAt,
+    } = await this.prisma.user.create({
+      data: {
+        email: user.email,
+        firstName: user.firstName,
+        lastName: user.lastName,
+        password: user.password,
+        profileId: profile.id,
+        uuid: user.uuid,
+      },
+    });
 
     return new User({
       id,
       password,
       email,
+      firstName,
+      lastName,
       createdAt,
-      isActive,
+      status,
       updatedAt,
       uuid,
     });
   }
 
   public async findById(theId: number): Promise<User> {
-    const { id, password, email, isActive, updatedAt, uuid, createdAt } =
-      await this.prisma.user.findUnique({
-        where: {
-          id: theId,
-        },
-      });
+    const {
+      id,
+      password,
+      email,
+      status,
+      firstName,
+      lastName,
+      updatedAt,
+      uuid,
+      createdAt,
+    } = await this.prisma.user.findUnique({
+      where: {
+        id: theId,
+      },
+    });
 
     return new User({
       id,
       password,
       email,
+      firstName,
+      lastName,
       createdAt,
-      isActive,
+      status,
       updatedAt,
       uuid,
     });
   }
 
   public async findByEmail(theEmail: string): Promise<User> {
-    const { id, password, email, isActive, updatedAt, uuid, createdAt } =
-      await this.prisma.user.findUnique({
-        where: {
-          email: theEmail,
-        },
-      });
+    const {
+      id,
+      password,
+      email,
+      status,
+      firstName,
+      lastName,
+      updatedAt,
+      uuid,
+      createdAt,
+    } = await this.prisma.user.findUnique({
+      where: {
+        email: theEmail,
+      },
+    });
 
     return new User({
       id,
       password,
       email,
       createdAt,
-      isActive,
+      status,
+      firstName,
+      lastName,
       updatedAt,
       uuid,
     });

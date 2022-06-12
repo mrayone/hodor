@@ -1,36 +1,44 @@
 export class User {
   private _id: number;
+  private _firstName: string;
+  private _lastName: string;
   private _email: string;
   private _uuid: string;
   private _password: string;
-  private _isActive: boolean;
+  private _status: boolean;
   private _createdAt: Date;
   private _updatedAt: Date;
 
   constructor({
     id,
     email,
+    firstName,
+    lastName,
     uuid,
     password,
-    isActive,
+    status,
     createdAt,
     updatedAt,
   }:
     | {
         id?: number;
-        email?: string;
+        firstName: string;
+        lastName: string;
+        email: string;
         uuid?: string;
         password?: string;
-        isActive?: boolean;
+        status?: boolean;
         createdAt?: Date;
         updatedAt?: Date;
       }
     | undefined) {
     this._id = id;
     this._email = email;
+    this._firstName = firstName;
+    this._lastName = lastName;
     this._uuid = uuid;
     this._password = password;
-    this._isActive = isActive;
+    this._status = status;
     this._createdAt = createdAt;
     this._updatedAt = updatedAt;
   }
@@ -59,12 +67,32 @@ export class User {
     this._password = password;
   }
 
-  public get isActive() {
-    return this._isActive;
+  public get firstName() {
+    return this._firstName;
   }
 
-  public set isActive(isActive: boolean) {
-    this._isActive = isActive;
+  public set firstName(firstName: string) {
+    this._firstName = firstName;
+  }
+
+  public get lastName() {
+    return this._lastName;
+  }
+
+  public get fullName() {
+    return `${this._firstName} ${this._lastName}`;
+  }
+
+  public set lastName(lastName: string) {
+    this._lastName = lastName;
+  }
+
+  public get status() {
+    return this._status;
+  }
+
+  public set status(status: boolean) {
+    this._status = status;
   }
 
   public get createdAt() {

@@ -8,6 +8,8 @@ import { Inject, Injectable } from '@nestjs/common';
 type UserModel = {
   email: string;
   password: string;
+  firstName: string;
+  lastName: string;
 };
 @Injectable()
 export class UsersService {
@@ -19,10 +21,17 @@ export class UsersService {
     return await this.userRepository.findByEmail(username);
   }
 
-  async create({ email, password }: UserModel): Promise<User> {
+  async create({
+    firstName,
+    lastName,
+    email,
+    password,
+  }: UserModel): Promise<User> {
     const user = new User({
       password,
       email,
+      firstName,
+      lastName,
     });
 
     const userResult = await this.userRepository.store(user);
