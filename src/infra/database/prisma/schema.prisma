@@ -10,14 +10,44 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
+model Profile {
+  id          Int          @id(map: "PK_PROFILE_ID") @default(autoincrement())
+  name        String       @db.VarChar(150)
+  description String?      @db.VarChar(250)
+  status      Boolean      @default(true)
+  users       User[]
+  permissions Permission[]
+  updatedAt   DateTime     @default(now()) @map("updated_at")
+  createdAt   DateTime     @default(now()) @map("created_at")
+
+  @@map("profiles")
+}
+
+model Permission {
+  id        Int      @id(map: "PK_PERMISSION_ID") @default(autoincrement())
+  name      String   @db.VarChar(150)
+  value     String   @db.VarChar(150)
+  status    Boolean  @default(true)
+  updatedAt DateTime @default(now()) @map("updated_at")
+  createdAt DateTime @default(now()) @map("created_at")
+  Profile   Profile? @relation(fields: [profileId], references: [id], map: "FK_PERMISSIONS_PROFILE_ID")
+  profileId Int?     @map("profile_id")
+
+  @@map("permissions")
+}
+
 model User {
   id        Int      @id(map: "PK_USER_ID") @default(autoincrement())
   email     String   @unique(map: "UK_USER_EMAIL")
-  password  String
+  password  String   @db.VarChar(250)
   uuid      String   @unique(map: "UK_USER_UUID") @default(dbgenerated("gen_random_uuid()"))
-  isActive  Boolean  @default(true)
-  updatedAt DateTime @default(now())
-  createdAt DateTime @default(now())
+  status    Boolean  @default(true)
+  profileId Int      @map("profile_id")
+  profiles  Profile  @relation(references: [id], fields: [profileId], map: "FK_USER_PROFILE_ID")
+  updatedAt DateTime @default(now()) @map("updated_at")
+  createdAt DateTime @default(now()) @map("created_at")
+
 
   @@index([uuid, email], map: "IX_USER_COMPOSITE")
+  @@map("users")
 }
