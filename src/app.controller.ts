@@ -22,8 +22,15 @@ export class AppController {
   }
 
   @Post('register')
-  async register(@Body() createUser: CreateUserDto) {
-    return this.authService.register(createUser.username, createUser.password);
+  async register(
+    @Body() { email, lastName, firstName, password }: CreateUserDto,
+  ) {
+    return this.authService.register({
+      email,
+      firstName,
+      lastName,
+      password,
+    });
   }
 
   @UseGuards(JwtAuthGuard)
