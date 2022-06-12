@@ -5,7 +5,13 @@ import { AuthModule } from '@infra/shared/auth/auth.module';
 import { UsersModule } from '@application/users/users.module';
 
 @Module({
-  imports: [AuthModule, UsersModule, ConfigModule.forRoot()],
+  imports: [
+    AuthModule,
+    UsersModule,
+    ConfigModule.forRoot({
+      envFilePath: ['.env.development'],
+    }),
+  ],
   controllers: [AppController],
   providers: [],
 })
