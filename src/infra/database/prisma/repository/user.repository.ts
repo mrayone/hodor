@@ -45,7 +45,15 @@ class UserRepository implements IUserRepository {
     });
   }
 
-  public async findById(theId: number): Promise<User> {
+  public async findById(theId: number): Promise<User | undefined> {
+    const user = await this.prisma.user.findUnique({
+      where: {
+        id: theId,
+      },
+    });
+
+    if (!user) return;
+
     const {
       id,
       password,
@@ -56,11 +64,7 @@ class UserRepository implements IUserRepository {
       updatedAt,
       uuid,
       createdAt,
-    } = await this.prisma.user.findUnique({
-      where: {
-        id: theId,
-      },
-    });
+    } = user;
 
     return new User({
       id,
@@ -75,7 +79,15 @@ class UserRepository implements IUserRepository {
     });
   }
 
-  public async findByEmail(theEmail: string): Promise<User> {
+  public async findByEmail(theEmail: string): Promise<User | undefined> {
+    const user = await this.prisma.user.findUnique({
+      where: {
+        email: theEmail,
+      },
+    });
+
+    if (!user) return;
+
     const {
       id,
       password,
@@ -86,11 +98,7 @@ class UserRepository implements IUserRepository {
       updatedAt,
       uuid,
       createdAt,
-    } = await this.prisma.user.findUnique({
-      where: {
-        email: theEmail,
-      },
-    });
+    } = user;
 
     return new User({
       id,

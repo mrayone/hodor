@@ -3,7 +3,7 @@ import {
   USER_REPOSITORY,
 } from '@domain/repository/userRepository.interface';
 import { User } from '@domain/user/user.entity';
-import { Inject, Injectable } from '@nestjs/common';
+import { Inject, Injectable, BadRequestException } from '@nestjs/common';
 
 type UserModel = {
   email: string;
@@ -33,6 +33,15 @@ export class UsersService {
       firstName,
       lastName,
     });
+
+    const findUser = await this.findOne(email);
+
+    if (findUser) {
+      throw new BadRequestException({
+        statusCode: 400,
+        message: 'This e-mail already in use',
+      });
+    }
 
     const userResult = await this.userRepository.store(user);
 
