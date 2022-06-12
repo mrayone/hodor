@@ -12,7 +12,7 @@ datasource db {
 
 model Profile {
   id          Int          @id(map: "PK_PROFILE_ID") @default(autoincrement())
-  name        String       @db.VarChar(150)
+  name        String       @unique(map: "UK_PROFILE_NAME") @db.VarChar(150)
   description String?      @db.VarChar(250)
   status      Boolean      @default(true)
   users       User[]
@@ -20,6 +20,7 @@ model Profile {
   updatedAt   DateTime     @default(now()) @map("updated_at")
   createdAt   DateTime     @default(now()) @map("created_at")
 
+  @@index([name], map: "IX_PROFILE_NAME")
   @@map("profiles")
 }
 
@@ -30,7 +31,7 @@ model Permission {
   status    Boolean  @default(true)
   updatedAt DateTime @default(now()) @map("updated_at")
   createdAt DateTime @default(now()) @map("created_at")
-  Profile   Profile? @relation(fields: [profileId], references: [id], map: "FK_PERMISSIONS_PROFILE_ID")
+  Profile   Profile? @relation(fields: [profileId], references: [id], map: "FK_PERMISSION_PROFILE_ID")
   profileId Int?     @map("profile_id")
 
   @@map("permissions")
@@ -40,6 +41,8 @@ model User {
   id        Int      @id(map: "PK_USER_ID") @default(autoincrement())
   email     String   @unique(map: "UK_USER_EMAIL")
   password  String   @db.VarChar(250)
+  firstName String   @map("first_name") @db.VarChar(250)
+  lastName  String   @map("last_name") @db.VarChar(250)
   uuid      String   @unique(map: "UK_USER_UUID") @default(dbgenerated("gen_random_uuid()"))
   status    Boolean  @default(true)
   profileId Int      @map("profile_id")

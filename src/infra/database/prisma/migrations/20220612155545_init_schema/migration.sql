@@ -28,6 +28,8 @@ CREATE TABLE "users" (
     "id" SERIAL NOT NULL,
     "email" TEXT NOT NULL,
     "password" VARCHAR(250) NOT NULL,
+    "first_name" VARCHAR(250) NOT NULL,
+    "last_name" VARCHAR(250) NOT NULL,
     "uuid" TEXT NOT NULL DEFAULT gen_random_uuid(),
     "status" BOOLEAN NOT NULL DEFAULT true,
     "profile_id" INTEGER NOT NULL,
