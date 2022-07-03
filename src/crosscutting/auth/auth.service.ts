@@ -25,7 +25,7 @@ export class AuthService implements IAuthenticationService {
         email: user.email,
         sub: user.uuid,
         name: user.fullName,
-        givenName: user.firstName,
+        given_name: user.firstName,
       };
     }
     return null;
@@ -52,18 +52,23 @@ export class AuthService implements IAuthenticationService {
       email: user.email,
       sub: user.uuid,
       name: user.fullName,
-      givenName: user.firstName,
+      given_name: user.firstName,
     });
 
     return access;
   }
 
-  async login(user: TokenClaims): Promise<AccessToken> {
+  async login({
+    email,
+    name,
+    sub,
+    given_name,
+  }: TokenClaims): Promise<AccessToken> {
     const payload = {
-      email: user.email,
-      name: user.name,
-      sub: user.sub,
-      given_name: user.givenName,
+      email,
+      name,
+      sub,
+      given_name,
     };
 
     return {

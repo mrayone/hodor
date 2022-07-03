@@ -2,7 +2,7 @@ export type TokenClaims = {
   email: string;
   name: string;
   sub: string;
-  givenName: string;
+  given_name: string;
 };
 
 export type RegistrationModel = {
