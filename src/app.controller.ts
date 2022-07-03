@@ -9,7 +9,7 @@ import {
 import { AuthService } from '@infra/shared/auth/auth.service';
 import { JwtAuthGuard } from '@infra/shared/auth/guards/jwt-auth.guard';
 import { LocalAuthGuard } from '@infra/shared/auth/guards/local-auth.guard';
-import { CreateUserDto } from '@application/dtos/createUser.dto';
+import { CreateUserDto } from '@application/user/dtos/createUser.dto';
 
 @Controller()
 export class AppController {

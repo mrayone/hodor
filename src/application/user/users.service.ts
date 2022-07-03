@@ -1,7 +1,7 @@
 import {
   IUserRepository,
   USER_REPOSITORY,
-} from '@domain/repository/userRepository.interface';
+} from '@domain/user/repository/userRepository.interface';
 import { User } from '@domain/user/user.entity';
 import { Inject, Injectable, BadRequestException } from '@nestjs/common';
 

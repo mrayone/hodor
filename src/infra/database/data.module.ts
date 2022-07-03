@@ -1,4 +1,4 @@
-import { USER_REPOSITORY } from '@domain/repository/userRepository.interface';
+import { USER_REPOSITORY } from '@domain/user/repository/userRepository.interface';
 import UserRepository from '@infra/database/prisma/repository/user.repository';
 import { Module } from '@nestjs/common';
 import { PrismaService } from './prisma/prisma.service';

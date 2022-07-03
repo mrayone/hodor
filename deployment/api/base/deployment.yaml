@@ -1,0 +1,38 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: hodor-auth-deployment
+  labels:
+    name: hodor-auth
+    tier: back-end
+spec:
+  selector:
+    matchLabels:
+      app: hodor-auth
+  replicas: 1
+  template:
+    metadata:
+      name: back-end
+      labels:
+        app: hodor-auth
+    spec:
+      containers:
+        - name: hodor-backend
+          image: hodor:latest
+          imagePullPolicy: IfNotPresent
+          ports:
+            - containerPort: 8080
+          livenessProbe:
+            httpGet:
+              path: /health
+              port: 8080
+            periodSeconds: 10
+            failureThreshold: 3
+            initialDelaySeconds: 20
+          readinessProbe:
+            httpGet:
+              path: /health
+              port: 8080
+            periodSeconds: 10
+            failureThreshold: 5
+            initialDelaySeconds: 3
