@@ -5,15 +5,22 @@ import {
   UseGuards,
   Get,
   Body,
+  Inject,
 } from '@nestjs/common';
-import { AuthService } from '@infra/shared/auth/auth.service';
-import { JwtAuthGuard } from '@infra/shared/auth/guards/jwt-auth.guard';
-import { LocalAuthGuard } from '@infra/shared/auth/guards/local-auth.guard';
+import { JwtAuthGuard } from '@crosscutting/auth/guards/jwt-auth.guard';
+import { LocalAuthGuard } from '@crosscutting/auth/guards/local-auth.guard';
 import { CreateUserDto } from '@application/user/dtos/createUser.dto';
+import {
+  IAuthenticationService,
+  AUTHENTICATION_SERVICE,
+} from '@crosscutting/auth/interfaces/auth.service.interface';
 
 @Controller()
 export class AppController {
-  constructor(private authService: AuthService) {}
+  constructor(
+    @Inject(AUTHENTICATION_SERVICE)
+    private authService: IAuthenticationService,
+  ) {}
 
   @UseGuards(LocalAuthGuard)
   @Post('auth/login')

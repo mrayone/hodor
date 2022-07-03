@@ -12,6 +12,7 @@
     "baseUrl": "./",
     "paths": {
       "@infra/*": ["./src/infra/*"],
+      "@crosscutting/*": ["./src/crosscutting/*"],
       "@application/*": ["./src/application/*"],
       "@domain/*": ["./src/domain/*"]
     },

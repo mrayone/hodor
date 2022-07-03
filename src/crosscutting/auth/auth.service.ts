@@ -2,23 +2,23 @@ import { Injectable } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
 import { UsersService } from '@application/user/users.service';
 import * as bcrypt from 'bcrypt';
-
-type LoginType = {
-  email: string;
-  name: string;
-  sub: string;
-  givenName: string;
-};
+import { AccessToken, TokenClaims, RegistrationModel } from './types/auth';
+import { IAuthenticationService } from './interfaces/auth.service.interface';
 
 @Injectable()
-export class AuthService {
+export class AuthService implements IAuthenticationService {
   constructor(
     private usersService: UsersService,
     private jwtService: JwtService,
   ) {}
 
-  async validateUser(username: string, pass: string): Promise<any> {
+  async getUserCredentials(
+    username: string,
+    pass: string,
+  ): Promise<TokenClaims | null> {
     const user = await this.usersService.findOne(username);
+    if (!user) return null;
+
     const isMatchPass = await bcrypt.compare(pass, user.password);
     if (user && isMatchPass) {
       return {
@@ -36,17 +36,11 @@ export class AuthService {
     password,
     firstName,
     lastName,
-  }: {
-    email: string;
-    password: string;
-    firstName: string;
-    lastName: string;
-  }): Promise<{
-    acesss_token: string;
-  }> {
+  }: RegistrationModel): Promise<AccessToken> {
     const salt = await bcrypt.genSalt();
     const hashPassword = await bcrypt.hash(password, salt);
 
+    //notify to create user;
     const user = await this.usersService.create({
       email,
       password: hashPassword,
@@ -64,7 +58,7 @@ export class AuthService {
     return access;
   }
 
-  async login(user: LoginType) {
+  async login(user: TokenClaims): Promise<AccessToken> {
     const payload = {
       email: user.email,
       name: user.name,
@@ -72,9 +66,8 @@ export class AuthService {
       given_name: user.givenName,
     };
 
-    console.log(user);
     return {
-      acesss_token: this.jwtService.sign(payload),
+      access_token: this.jwtService.sign(payload),
     };
   }
 }
