@@ -1,7 +1,7 @@
 import { Module } from '@nestjs/common';
 import { ConfigModule } from '@nestjs/config';
 import { AppController } from './app.controller';
-import { AuthModule } from '@infra/shared/auth/auth.module';
+import { AuthModule } from '@crosscutting/auth/auth.module';
 
 @Module({
   imports: [
