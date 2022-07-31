@@ -11,5 +11,11 @@ services:
       - POSTGRESQL_DATABASE=hodor_db
     volumes:
       - db:/bitnami/postgresql
+  doc: 
+    image: redocly/redoc
+    ports:
+    - 8080:80
+    environment:
+    - SPEC_URL=http://localhost:3333/api-json
 volumes:
   db:

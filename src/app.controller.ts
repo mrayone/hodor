@@ -14,8 +14,13 @@ import {
   IAuthenticationService,
   AUTHENTICATION_SERVICE,
 } from '@crosscutting/auth/interfaces/auth.service.interface';
+import { AuthUserDTO } from '@application/user/dtos/auth-user.dto';
+import { AccessToken } from '@crosscutting/auth/types/auth';
+
+import { ApiBody, ApiExtension, ApiResponse, ApiTags } from '@nestjs/swagger';
 
 @Controller()
+@ApiTags('authentication')
 export class AppController {
   constructor(
     @Inject(AUTHENTICATION_SERVICE)
@@ -24,8 +29,23 @@ export class AppController {
 
   @UseGuards(LocalAuthGuard)
   @Post('auth/login')
-  async login(@Request() req) {
-    return this.authService.login(req.user);
+  @ApiBody({
+    type: AuthUserDTO,
+  })
+  @ApiExtension('x-codeSamples', [
+    {
+      lang: 'cURL',
+      label: 'CLI',
+      source: `curl --request POST \ --url '${process.env.APP_URL}/auth/login' \ --header 'content-type: application/json: ' \ --data '{"email": "string","password": "string"}'`,
+    },
+  ])
+  @ApiResponse({
+    type: AccessToken,
+    status: 201,
+  })
+  @ApiResponse({ status: 403, description: 'Forbidden.' })
+  async login(@Request() request) {
+    return this.authService.login(request.user);
   }
 
   @Post('register')
